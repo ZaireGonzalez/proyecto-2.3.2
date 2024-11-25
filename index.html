@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISPOA - Sistema POS Agrícola</title>
+    <style>
+        /* Definición de colores */
+        :root {
+            --color-principal: #388E3C; /* Verde */
+            --color-secundario: #4CAF50; /* Verde más claro */
+            --color-cafe: #6D4C41; /* Café */
+            --color-blanco: #FFFFFF;
+            --color-gris: #F4F4F4;
+            --color-azul: #2196F3;
+        }
+
+        /* Estilo global */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--color-gris);
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            background-color: var(--color-principal);
+            color: var(--color-blanco);
+            padding: 15px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: var(--color-principal);
+            color: var(--color-blanco);
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Estilo del menú lateral */
+        nav {
+            width: 250px;
+            background-color: var(--color-secundario);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding-top: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav ul li a {
+            color: var(--color-blanco);
+            text-decoration: none;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--color-cafe);
+        }
+
+        /* Estilo del contenido principal */
+        main {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: var(--color-cafe);
+        }
+
+        /* Estilo de las tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--color-blanco);
+        }
+
+        th, td {
+            border: 1px solid var(--color-cafe);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--color-principal);
+            color: var(--color-blanco);
+        }
+
+        td {
+            background-color: var(--color-gris);
+        }
+
+        /* Estilo de los modales */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4); /* Fondo oscuro */
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: var(--color-blanco);
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid var(--color-cafe);
+            width: 70%;  /* Aumentamos el tamaño */
+            max-width: 1000px; /* Máximo tamaño */
+            height: auto; /* Ajuste automático de altura */
+            box-sizing: border-box;
+            text-align: center; /* Centrado de texto */
+        }
+
+        h3 {
+            color: var(--color-cafe);
+        }
+
+        .close {
+            color: var(--color-cafe);
+            font-size: 30px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        /* Estilo de los botones */
+        button {
+            background-color: var(--color-principal);
+            color: var(--color-blanco);
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: var(--color-azul);
+        }
+
+        /* Estilo de los campos de formulario */
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid var(--color-cafe);
+            box-sizing: border-box;
+        }
+
+        .form-container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: var(--color-blanco);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SISPOA - Sistema POS Agrícola</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" onclick="abrirModal('consultaSaldo')">Consulta de Saldo</a></li>
+            <li><a href="#" onclick="abrirModal('peticiones')">Peticiones, Quejas o Reclamos</a></li>
+            <li><a href="#" onclick="abrirModal('inventario')">Inventario</a></li>
+            <li><a href="#" onclick="abrirModal('proveedores')">Proveedores</a></li>
+            <li><a href="#" onclick="abrirModal('registro')">Registro</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar Sesión</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Modal Consulta de Saldo -->
+        <div id="consultaSaldo" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="cerrarModal('consultaSaldo')">&times;</span>
+                <h3>Consulta de Saldo</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Saldo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>02/11/2024</td><td>$3,000,000</td></tr>
+                        <tr><td>01/11/2024</td><td>$2,800,000</td></tr>
+                        <tr><td>31/10/2024</td><td>$3,500,000</td></tr>
+                    </tbody>
+                </table>
+                <button onclick="volverMenu('consultaSaldo')">Regresar al Menú</button>
+            </div>
+        </div>
+
+        <!-- Modal Peticiones, Quejas o Reclamos -->
+        <div id="peticiones" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="cerrarModal('peticiones')">&times;</span>
+                <h3>Peticiones, Quejas o Reclamos</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Tipo de Solicitud</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>02/11/2024</td><td>Queja</td><td>Problema con la factura</td></tr>
+                        <tr><td>01/11/2024</td><td>Peticiones</td><td>Solicitud de cambio de proveedor</td></tr>
+                    </tbody>
+                </table>
+                <button onclick="volverMenu('peticiones')">Regresar al Menú</button>
+            </div>
+        </div>
+
+        <!-- Modal Inventario -->
+        <div id="inventario" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="cerrarModal('inventario')">&times;</span>
+                <h3>Inventario</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Tomates</td><td>200</td><td>$1,000</td></tr>
+                        <tr><td>Lechugas</td><td>150</td><td>$800</td></tr>
+                        <tr><td>Zanahorias</td><td>300</td><td>$600</td></tr>
+                    </tbody>
+                </table>
+                <button onclick="volverMenu('inventario')">Regresar al Menú</button>
+            </div>
+        </div>
+
+        <!-- Modal Proveedores -->
+        <div id="proveedores" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="cerrarModal('proveedores')">&times;</span>
+                <h3>Proveedores</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Proveedor</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>AgroProveedores S.A.</td><td>Semillas</td><td>$500</td></tr>
+                        <tr><td>Fertilizantes XYZ</td><td>Fertilizantes</td><td>$300</td></tr>
+                    </tbody>
+                </table>
+                <button onclick="volverMenu('proveedores')">Regresar al Menú</button>
+            </div>
+        </div>
+
+        <!-- Modal Registro -->
+        <div id="registro" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="cerrarModal('registro')">&times;</span>
+                <h3>Registro de Usuario</h3>
+                <div class="form-container">
+                    <form>
+                        <input type="text" placeholder="Nombre Completo">
+                        <input type="email" placeholder="Correo Electrónico">
+                        <input type="password" placeholder="Contraseña">
+                        <button type="submit">Registrar</button>
+                    </form>
+                </div>
+                <button onclick="volverMenu('registro')">Regresar al Menú</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 SISPOA. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function abrirModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function cerrarModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function volverMenu(modalId) {
+            cerrarModal(modalId);
+        }
+
+        function cerrarSesion() {
+            alert("Sesión cerrada");
+        }
+    </script>
+
+</body>
+</html>
